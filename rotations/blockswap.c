@@ -48,6 +48,15 @@ void rotate (int* array, int rnum, int num)
 	int size = num - rnum;
 	int* B = (int*)malloc(size * sizeof(int));
 	
+	// Divide array into A and B where A is the size of rnum.
+	// If A's size is smaller than the size of B, divide B into Bl and Br
+	// where Br is of the same lenght as A and then swap Br and A to give BrBlA
+	// Repeat the process on B
+	// If A is longer, divide A into Al and Ar and the swap Al and Ar where Al
+	// is of the same length as B then swap B and Al to give BArAl
+	// Repat the process on A
+	// If A is equal to B, swap A and B.
+	
 	if (rnum < size)
 	{
 			
