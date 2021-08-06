@@ -9,6 +9,8 @@
 #include <stdlib.h>
 
 void rotate (int*, int, int);
+void swap (int*, int, int, int);
+void printarray (int*, int);
 
 
 int main (void)
@@ -28,46 +30,81 @@ int main (void)
 	{
 		scanf("%d", &array[i]);
 	}
-	rotate(array, rotation_num, num);
+	
+	rotate (array, rotation_num, num);
 	
 	printf("Rotating the numbers by %d gives: ", rotation_num);
-	for (int i = 0; i < num; i++)
-	{
-		printf("%d ", array[i]);
-	}
-	printf("\n");
+	printarray (array, num);
 	
 	free(array);
 	return 0;
 }
 
-void rotate (int* array, int rnum, int num)
+void printarray (int* array, int num)
 {
-	//Initializing parts of the array
-	int* A = (int*)malloc(rnum * sizeof(int));
-	int size = num - rnum;
-	int* B = (int*)malloc(size * sizeof(int));
-	
-	// Divide array into A and B where A is the size of rnum.
-	// If A's size is smaller than the size of B, divide B into Bl and Br
-	// where Br is of the same lenght as A and then swap Br and A to give BrBlA
-	// Repeat the process on B
-	// If A is longer, divide A into Al and Ar and the swap Al and Ar where Al
-	// is of the same length as B then swap B and Al to give BArAl
-	// Repat the process on A
-	// If A is equal to B, swap A and B.
-	
-	if (rnum < size)
+	for (int i = 0; i < num; i++)
 	{
-			
+		printf("%d ", array[i]);
 	}
-	else if (rnum > size)
-	{
+	printf("\n");
+}
+
+void rotate (int* array, int rnum, int num)
+{	
+	/***************************************************************************
+	** Divide array into A and B where A is the size of rnum.
+	** If A's size is smaller than the size of B, divide B into Bl and Br
+	** where Br is of the same lenght as A and then swap Br and A to give BrBlA
+	** Repeat the process on B
+	** If A is longer, divide A into Al and Ar and the swap Al and Ar where Al
+	** is of the same length as B then swap B and Al to give BArAl
+	** Repeat the process on A
+	** If A is equal to B, swap A and B.
+	****************************************************************************/
 	
+	// number of elements to be rotated is zero
+	// or equal to the array size
+	if (rnum == 0 || rnum == num)
+	{
+		return;
 	}
-	else
+	// number of elemnets to be rotated is exactly
+	// half the array size
+	if (rnum == num - rnum)
 	{
-	
+		swap (array, 0, num - rnum, rnum);
+		printf("1\n");
+		return;
+	}
+	// A is shorter than B
+	if (rnum < num - rnum)
+	{
+		swap (array, 0, num - rnum, rnum);
+		printf("2\n");
+		rotate (array, rnum, num - rnum);
+		printf("3\n");
+	}
+	// B is shorter
+	if (rnum > num - rnum)
+	{
+		swap (array, 0, rnum, num - rnum);
+		printf("4\n");
+		rotate (array + num - rnum, 2 * rnum - num, rnum);
+		printf("5\n");
+	}
+
+}
+
+void swap (int* array, int astart, int bstart, int repeat)
+{
+	int i = 0;
+	int temp;
+	while (i < repeat)
+	{
+		temp = array[astart + i];
+		array[astart + i] = array[bstart + i];
+		array[bstart + i] = temp;
+		i++;
 	}
 
 }
