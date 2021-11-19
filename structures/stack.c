@@ -13,15 +13,15 @@ Node* create(Node* head);
 bool stack_is_empty(Node* head);
 Node* push(Node* head, int num);
 int pop(Node** head);
-void display(Stack* P, int* top);
-int size_of_stack(Stack* P, int* top);
-int top_of_stack(Stack* P, int* top);
+void display(Node* head);
+int size_of_stack(Node* head);
+int top_of_stack(Node* head);
 
 int max_size = 0;
 
 int main(void)
 {
-    Node* head;
+    Node* head = NULL;
     int option;
     int number;
     int size;
@@ -40,26 +40,26 @@ int main(void)
             case 1:
                 printf("Enter number: ");
                 scanf("%d", &number);
-                push(head, number);
+                head = push(head, number);
                 break;
             case 2:
                 printf("%d\n", pop(&head));
                 break;
             case 3:
-                if (stack_is_empty(&head))
+                if (stack_is_empty(head))
                     printf("Stack is empty\n");
                 else
                     printf("Stack is not empty\n");
                 break;
             case 4:
-                display(P, &top);
+                display(head);
                 break;
             case 5:
-                size = size_of_stack(P, &top);
+                size = size_of_stack(head);
                 size == 0 ? printf("Stack is Empty\n") : printf("Size of stack: %d\n", size);
                 break;
             case 6:
-                printf("Top of stack: %d\n", top_of_stack(P, &top));
+                printf("Top of stack: %d\n", top_of_stack(head));
                 break;
             case 0:
                 printf("\nBye!\n");
@@ -91,6 +91,7 @@ void greeting(void)
 Node* create(Node* head)
 {
     head = (Node*)malloc(sizeof(Node));
+    head->next = NULL;
     return head;
 }
 
@@ -120,8 +121,8 @@ void instruction(void)
 bool stack_is_empty(Node* head)
 {
     if (head == NULL) 
-        return false;
-    return true;
+        return true;
+    return false;
 }
 
 
@@ -132,12 +133,18 @@ bool stack_is_empty(Node* head)
  */ 
 Node* push(Node* head, int num)
 {
-    Node* new_node = (Node*)malloc(sizeof(Node));
+    Node* new_node = create(new_node);
 
-    new_node->data = num;
-    new_node->next = head;
-    head = new_node;
-
+    if (head == NULL)
+    {
+        head = create(head);
+        head->data = num;
+    }
+    else {
+        new_node->data = num;
+        new_node->next = head;
+        head = new_node;
+    }
     return head;
 }
 
@@ -149,7 +156,7 @@ Node* push(Node* head, int num)
  */ 
 int pop(Node** head)
 {
-    if (stack_is_empty(head))
+    if (stack_is_empty(*head))
     {
         printf("Stack is empty!\n");
         exit(EXIT_FAILURE);
@@ -164,58 +171,59 @@ int pop(Node** head)
     return data;
 }
 
-/* display: Takes in a pointer to a stack and the top of stack
-**          Displays all the elements in the stack and returns.
-*/
-void display(Stack* P, int* top)
+/**
+ * @brief display: prints out the stack
+ * @param head pointer to the head of the stack
+ * @return void
+ */ 
+void display(Node* head)
 {
-    int i = *top;
-    if (stack_is_empty(top))
+    // Node* temp = head;
+    if (stack_is_empty(head))
     {
         printf("Stack is empty!\n");
         return;
     }
 
-    while (!stack_is_empty(top))
+    while (!stack_is_empty(head))
     {
-        *top = *top - 1;
-        printf ("%d ", P[*top]);
+        printf ("%d ", head->data);
+        head = head->next;
     }
     printf("\n");
-    *top = i;
 }
 
 
-/* top_of_stack: Displays the element at the top of stack
-**               without removing it then returns.
-*/
-int top_of_stack(Stack* P, int* top)
+/**
+ * @brief top_of_stack: displays the element at the top of the stack
+ * @param head pointer to the top of the stack
+ * @return element at the top of stack
+ */ 
+int top_of_stack(Node* head)
 {
-     if (stack_is_empty(top))
+     if (stack_is_empty(head))
     {
         printf("Stack is empty!\n");
         exit(EXIT_FAILURE);
     }
 
-    return P[*top - 1];
+    return head->data;
 }
 
 
-/* size_of_stack: Takes in a stack and a pointer to the 
-**                top of stack and return an integer
-**                representing the number of elements in the
-**                stack.
-*/
-int size_of_stack(Stack* P, int *top)
+/**
+ * @brief size_of_stack: Computes the number of elements found in the stack
+ * @param head pointer to the top of the stack
+ * @return integer: number of elements in the stack
+ */ 
+int size_of_stack(Node* head)
 {
-    int count = 0, temp = *top;
+    int count = 0;
 
-    while (!stack_is_empty(top))
+    while (!stack_is_empty(head))
     {
-        *top -= 1;
+        head = head->next;
         count ++;
     }
-
-    *top = temp;
     return count;
 }
