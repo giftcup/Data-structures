@@ -1,3 +1,7 @@
+/**
+ * @brief implementation of a stack using 
+ *        a linked list.
+ */ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -163,8 +167,7 @@ int pop(Node** head)
     }
 
     int data = (*head)->data;               //hold data item at the top of stack
-    Node* temp;
-    temp = (Node*)malloc(sizeof(Node));     //temporary node to hold head
+    Node* temp;     //temporary node to hold head
     temp = *head;
     *head = (*head)->next;
     free(temp);
@@ -178,7 +181,6 @@ int pop(Node** head)
  */ 
 void display(Node* head)
 {
-    // Node* temp = head;
     if (stack_is_empty(head))
     {
         printf("Stack is empty!\n");
