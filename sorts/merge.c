@@ -5,6 +5,7 @@ int *create(int *list, int number_of_elements);
 void read_elements(int *list, int number_of_elements);
 void merge_sort(int *list, int left, int right);
 void print_list(int *list, int number_of_elements);
+void merge(int list[], int p, int q, int r);
 
 int main(void) {
     int *list;
